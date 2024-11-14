@@ -1,15 +1,13 @@
 import { useEffect } from "react";
-import { Map, useKakaoLoader } from "react-kakao-maps-sdk";
+import { Map } from "react-kakao-maps-sdk";
 import MapControls from "./MapControls";
 import useMap from "../../hooks/useMap"; // 경로 수정
 import useCurrentLocation from "../../hooks/useCurrentLocation"; // 경로 수정
+import { UseMapContext } from "../../context/MapContext";
 
 export default function KakaoMap() {
-  const [loading, error] = useKakaoLoader({
-    appkey: import.meta.env.VITE_REACT_APP_KAKAOMAP_KEY,
-  });
-
-  const { map, setMap, zoomIn, zoomOut, setCenterToMyPosition } = useMap();
+  const { zoomIn, zoomOut, setCenterToMyPosition } = useMap();
+  const { map, setMap, loading, error } = UseMapContext();
   const location = useCurrentLocation();
 
   const displayMarker = (locPosition, markerImagePath = null) => {
@@ -26,7 +24,6 @@ export default function KakaoMap() {
       image: markerImage,
     });
     marker.setMap(map);
-    map.setCenter(locPosition);
   };
 
   useEffect(() => {
@@ -36,6 +33,7 @@ export default function KakaoMap() {
         location.lng
       );
       displayMarker(locPosition, "/assets/mylocation.svg");
+      map.setCenter(locPosition);
     }
   }, [loading, map, location]);
 

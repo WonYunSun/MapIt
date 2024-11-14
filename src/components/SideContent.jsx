@@ -30,7 +30,7 @@ const SideBtn = styled.button`
   background-clip: padding-box;
   z-index: 10;
   &:hover {
-    background-color: #fcfcfc;
+    opacity: 1;
     color: blue;
   }
 `;
